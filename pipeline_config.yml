@@ -3,4 +3,4 @@ nodes:
     source: pushupwhite.mp4
 - model.posenet
 - custom_nodes.dabble.wave
-- output.media_writer
+- output.screen

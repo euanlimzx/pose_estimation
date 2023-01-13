@@ -14,7 +14,8 @@ KP_RIGHT_WRIST = 10
 KP_RIGHT_ELBOW = 8
 KP_RIGHT_HIP = 12
 KP_RIGHT_KNEE = 14
-keypointList = [4,6,10,8,12,14]
+KP_RIGHT_ANKLE = 16
+keypointList = [4,6,10,8,12,14,16]
 
 
 def map_keypoint_to_image_coords(
@@ -92,6 +93,7 @@ class Node(AbstractNode):
       right_elbow = None
       right_hip = None
       right_knee = None
+      right_ankle = None
 
       for i, keypoints in enumerate(the_keypoints):
          keypoint_score = the_keypoint_scores[i]
@@ -115,6 +117,8 @@ class Node(AbstractNode):
                right_hip = keypoints
             if i == KP_RIGHT_KNEE:
                right_knee = keypoints
+            if i == KP_RIGHT_ANKLE:
+               right_ankle = keypoints
 
       def getAngle(A, B, C):
          AB = math.sqrt((B[0]-A[0])**2 + (B[1]-A[1])**2)
@@ -137,14 +141,14 @@ class Node(AbstractNode):
       if self.direction == "up": #to check for a proper down
          draw_text(img, 160, 200, "going down", BLACK)
          #draw_text(img, 200, 200, str(self.downCondition), BLACK)
-         if self.downCondition == 3:
+         if self.downCondition == 4:
             self.downCondition = 0
             self.direction = "down"
             self.num_pushups +=1
          if right_shoulder is not None and right_elbow is not None and right_wrist is not None:
             angle = getAngle(right_shoulder,right_elbow,right_wrist)
             draw_text(img, 60, 60, str(angle), BLACK)
-            if angle <= 90:
+            if angle <= 100:
                self.downCondition += 1
          if right_ear is not None and right_elbow is not None:
             if earBelowElbow(right_ear,right_elbow) is True:
@@ -152,11 +156,15 @@ class Node(AbstractNode):
          if right_elbow is not None and right_shoulder is not None and right_hip is not None:
             if elbowAboveShoulderAndHip(right_elbow,right_shoulder,right_hip) is True:
                self.downCondition +=1
+         if right_wrist is not None and right_shoulder is not None and right_ankle is not None:
+            angle = getAngle(right_shoulder,right_ankle,right_wrist)
+            if angle <= 10:
+               self.downCondition +=1
 
       if self.direction == "down": #to check for a proper up
          draw_text(img, 160, 200, "going up", BLACK)
          #draw_text(img, 200, 200, str(self.upCondition), BLACK)
-         if self.upCondition == 1:
+         if self.upCondition == 2:
             self.upCondition = 0
             self.direction = "up"
          if right_shoulder is not None and right_elbow is not None and right_wrist is not None:
@@ -164,6 +172,10 @@ class Node(AbstractNode):
             draw_text(img, 60, 60, str(angle), BLACK)
             if angle >= 170:
                self.upCondition += 1
+         if right_wrist is not None and right_shoulder is not None and right_ankle is not None:
+            angle = getAngle(right_shoulder,right_ankle,right_wrist)
+            if angle >= 40:
+               self.upCondition +=1
       def oldcode(): #this is just for me to hide old code
          # if right_shoulder is not None and right_hip is not None and right_ear is not None:
          #    # only count number pushups after we have gotten the keypoints for the shoulder from the code above
