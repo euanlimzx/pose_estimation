@@ -62,9 +62,10 @@ class Node(AbstractNode):
       self.right_elbow = None
       self.right_hip = None
       self.right_knee = None
-
-      self.direction = None      # see if any changes wants to be made here
-      self.num_direction_changes = 0 # here as well
+      
+      self.upCondition = 0   #check if all conditions have been fufilled to consider a successful up
+      self.downCondition = 0 #check if all conditions have been fufilled to consider a successful down
+      self.direction = "up"      # see if any changes wants to be made here
 
       self.num_pushups = 0
 
@@ -133,6 +134,36 @@ class Node(AbstractNode):
          else:
             return False
 
+      if self.direction == "up": #to check for a proper down
+         draw_text(img, 160, 200, "going down", BLACK)
+         #draw_text(img, 200, 200, str(self.downCondition), BLACK)
+         if self.downCondition == 3:
+            self.downCondition = 0
+            self.direction = "down"
+            self.num_pushups +=1
+         if right_shoulder is not None and right_elbow is not None and right_wrist is not None:
+            angle = getAngle(right_shoulder,right_elbow,right_wrist)
+            draw_text(img, 60, 60, str(angle), BLACK)
+            if angle <= 90:
+               self.downCondition += 1
+         if right_ear is not None and right_elbow is not None:
+            if earBelowElbow(right_ear,right_elbow) is True:
+               self.downCondition +=1
+         if right_elbow is not None and right_shoulder is not None and right_hip is not None:
+            if elbowAboveShoulderAndHip(right_elbow,right_shoulder,right_hip) is True:
+               self.downCondition +=1
+
+      if self.direction == "down": #to check for a proper up
+         draw_text(img, 160, 200, "going up", BLACK)
+         #draw_text(img, 200, 200, str(self.upCondition), BLACK)
+         if self.upCondition == 1:
+            self.upCondition = 0
+            self.direction = "up"
+         if right_shoulder is not None and right_elbow is not None and right_wrist is not None:
+            angle = getAngle(right_shoulder,right_elbow,right_wrist)
+            draw_text(img, 60, 60, str(angle), BLACK)
+            if angle >= 170:
+               self.upCondition += 1
       def oldcode(): #this is just for me to hide old code
          # if right_shoulder is not None and right_hip is not None and right_ear is not None:
          #    # only count number pushups after we have gotten the keypoints for the shoulder from the code above
