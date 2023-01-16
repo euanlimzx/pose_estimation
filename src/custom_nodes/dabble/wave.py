@@ -5,7 +5,8 @@ from peekingduck.pipeline.nodes.abstract_node import AbstractNode
 
 # setup global constants
 FONT = cv2.FONT_HERSHEY_SIMPLEX
-WHITE = (255, 255, 255)       
+WHITE = (255, 255, 255)
+RED = (255,0,0)       
 BLACK = (0, 0,0)
 THRESHOLD = 0.3               # ignore keypoints below this threshold
 KP_RIGHT_EAR = 4              # PoseNet's skeletal keypoints
@@ -54,8 +55,8 @@ def draw_text(img, x, y, text_str: str, color_code):
 class Node(AbstractNode):
    def __init__(self, config: Dict[str, Any] = None, **kwargs: Any) -> None:
       super().__init__(config, node_path=__name__, **kwargs)
-      self.upCondition = 0   #check if all conditions have been fufilled to consider a successful up
-      self.downCondition = 0 #check if all conditions have been fufilled to consider a successful down
+      self.upCondition = set()   #check if all conditions have been fufilled to consider a successful up
+      self.downCondition = set() #check if all conditions have been fufilled to consider a successful down
       self.direction = "up"      #initialize as up, so later on we are looking our for a successful "down" 
       self.num_pushups = 0
 
@@ -124,45 +125,57 @@ class Node(AbstractNode):
 
       if self.direction == "up": #to check for a proper down
          draw_text(img, 160, 200, "going down", BLACK)
-
+         draw_text(img, 160, 300, str(self.downCondition), BLACK)
          #to check if there is a proper down position. if there is, we acknowledge the down, count the rep, and begin to lookout for an up
-         if self.downCondition == 4:
-            self.downCondition = 0
-            self.direction = "down"
+         if len(self.downCondition) == 2:
             self.num_pushups +=1
+            self.downCondition = set()
+            self.direction = "down"
+            
          
          #conditions that need to be met to be considered a successful "down position"
          if right_shoulder is not None and right_elbow is not None and right_wrist is not None:
             angle = getAngle(right_shoulder,right_elbow,right_wrist)
-            draw_text(img, 60, 60, str(angle), BLACK)
             if angle <= 100:
-               self.downCondition += 1
-         if right_ear is not None and right_elbow is not None:
-            if earBelowElbow(right_ear,right_elbow) is True:
-               self.downCondition +=1
-         if right_elbow is not None and right_shoulder is not None and right_hip is not None:
-            if elbowAboveShoulderAndHip(right_elbow,right_shoulder,right_hip) is True:
-               self.downCondition +=1
+               self.downCondition.add("a")
+               draw_text(img, 160, 230, str(angle), RED)
+            else:
+               draw_text(img, 160, 230, str(angle), BLACK)
+         # if right_ear is not None and right_elbow is not None:
+         #    if earBelowElbow(right_ear,right_elbow) is True:
+         #       self.downCondition.add("b")
+         # if right_elbow is not None and right_shoulder is not None and right_hip is not None:
+         #    if elbowAboveShoulderAndHip(right_elbow,right_shoulder,right_hip) is True:
+         #       self.downCondition.add("c")
          if right_wrist is not None and right_shoulder is not None and right_ankle is not None:
             angle = getAngle(right_shoulder,right_ankle,right_wrist)
-            if angle <= 10:
-               self.downCondition +=1
+            if angle <= 20:
+               self.downCondition.add("d")
+               draw_text(img, 160, 260, str(angle), RED)
+            else:
+               draw_text(img, 160, 260, str(angle), BLACK)
 
       if self.direction == "down": #to check for a proper up
-         draw_text(img, 160, 200, "going up", BLACK)
-         #draw_text(img, 200, 200, str(self.upCondition), BLACK)
-         if self.upCondition == 2:
-            self.upCondition = 0
+         draw_text(img, 300, 200, "going up", BLACK)
+         draw_text(img, 300, 300, str(self.upCondition), BLACK)
+         if len(self.upCondition) == 2:
+            self.upCondition = set()
             self.direction = "up"
          if right_shoulder is not None and right_elbow is not None and right_wrist is not None:
             angle = getAngle(right_shoulder,right_elbow,right_wrist)
-            draw_text(img, 60, 60, str(angle), BLACK)
             if angle >= 170:
-               self.upCondition += 1
+               self.upCondition.add("a")
+               draw_text(img, 300, 230, str(angle), RED)
+            else:
+               draw_text(img, 300, 230, str(angle), BLACK)
          if right_wrist is not None and right_shoulder is not None and right_ankle is not None:
             angle = getAngle(right_shoulder,right_ankle,right_wrist)
+            draw_text(img, 300, 260, str(angle), BLACK)
             if angle >= 40:
-               self.upCondition +=1
+               self.upCondition.add("b")
+               draw_text(img, 300, 260, str(angle), RED)
+            else:
+               draw_text(img, 300, 260, str(angle), BLACK)
                
       pushup_str = f"pushups = {self.num_pushups}"
       draw_text(img, 20, 30, pushup_str, BLACK)
