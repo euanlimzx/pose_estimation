@@ -48,7 +48,7 @@ def draw_text(img, x, y, text_str: str, color_code):
       text=text_str,
       org=(x, y),
       fontFace=cv2.FONT_HERSHEY_SIMPLEX,
-      fontScale=0.4,
+      fontScale=0.7,
       color=color_code,
       thickness=2,
    )
@@ -126,11 +126,7 @@ class Node(AbstractNode):
       if self.direction == "up": #to check for a proper down
          draw_text(img, 160, 200, "going down", BLACK)
          draw_text(img, 160, 300, str(self.downCondition), BLACK)
-         #to check if there is a proper down position. if there is, we acknowledge the down, count the rep, and begin to lookout for an up
-         if len(self.downCondition) == 2:
-            self.num_pushups +=1
-            self.downCondition = set()
-            self.direction = "down"
+         
             
          
          #conditions that need to be met to be considered a successful "down position"
@@ -154,13 +150,15 @@ class Node(AbstractNode):
                draw_text(img, 160, 260, str(angle), RED)
             else:
                draw_text(img, 160, 260, str(angle), BLACK)
+         #to check if there is a proper down position. if there is, we acknowledge the down, count the rep, and begin to lookout for an up
+         if len(self.downCondition) == 2:
+            self.num_pushups +=1
+            self.downCondition = set()
+            self.direction = "down"
 
       if self.direction == "down": #to check for a proper up
          draw_text(img, 300, 200, "going up", BLACK)
          draw_text(img, 300, 300, str(self.upCondition), BLACK)
-         if len(self.upCondition) == 2:
-            self.upCondition = set()
-            self.direction = "up"
          if right_shoulder is not None and right_elbow is not None and right_wrist is not None:
             angle = getAngle(right_shoulder,right_elbow,right_wrist)
             if angle >= 170:
@@ -171,11 +169,14 @@ class Node(AbstractNode):
          if right_wrist is not None and right_shoulder is not None and right_ankle is not None:
             angle = getAngle(right_shoulder,right_ankle,right_wrist)
             draw_text(img, 300, 260, str(angle), BLACK)
-            if angle >= 40:
+            if angle >= 35:
                self.upCondition.add("b")
                draw_text(img, 300, 260, str(angle), RED)
             else:
                draw_text(img, 300, 260, str(angle), BLACK)
+         if len(self.upCondition) == 2:
+            self.upCondition = set()
+            self.direction = "up"      
                
       pushup_str = f"pushups = {self.num_pushups}"
       draw_text(img, 20, 30, pushup_str, BLACK)
