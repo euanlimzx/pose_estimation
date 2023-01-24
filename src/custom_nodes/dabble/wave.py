@@ -127,8 +127,6 @@ class Node(AbstractNode):
          draw_text(img, 160, 200, "going down", BLACK)
          draw_text(img, 160, 300, str(self.downCondition), BLACK)
          
-            
-         
          #conditions that need to be met to be considered a successful "down position"
          if right_shoulder is not None and right_elbow is not None and right_wrist is not None:
             angle = getAngle(right_shoulder,right_elbow,right_wrist)
@@ -150,6 +148,13 @@ class Node(AbstractNode):
                draw_text(img, 160, 260, str(angle), RED)
             else:
                draw_text(img, 160, 260, str(angle), BLACK)
+
+         if right_shoulder is not None and right_hip is not None and right_ankle is not None:
+            angle = getAngle(right_shoulder,right_hip,right_ankle)
+            draw_text(img, 400, 30, str(angle), RED)
+            if angle < 165:
+               self.downCondition = set()
+               
          #to check if there is a proper down position. if there is, we acknowledge the down, count the rep, and begin to lookout for an up
          if len(self.downCondition) == 2:
             self.num_pushups +=1
@@ -159,6 +164,7 @@ class Node(AbstractNode):
       if self.direction == "down": #to check for a proper up
          draw_text(img, 300, 200, "going up", BLACK)
          draw_text(img, 300, 300, str(self.upCondition), BLACK)
+
          if right_shoulder is not None and right_elbow is not None and right_wrist is not None:
             angle = getAngle(right_shoulder,right_elbow,right_wrist)
             if angle >= 170:
@@ -174,6 +180,13 @@ class Node(AbstractNode):
                draw_text(img, 300, 260, str(angle), RED)
             else:
                draw_text(img, 300, 260, str(angle), BLACK)
+
+         if right_shoulder is not None and right_hip is not None and right_ankle is not None:
+            angle = getAngle(right_shoulder,right_hip,right_ankle)
+            draw_text(img, 400, 30, str(angle), RED)
+            if angle < 165:
+               self.upCondition = set()
+
          if len(self.upCondition) == 2:
             self.upCondition = set()
             self.direction = "up"      
