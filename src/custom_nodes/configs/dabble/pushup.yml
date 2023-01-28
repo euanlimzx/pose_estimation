@@ -1,0 +1,2 @@
+input: ["img", "keypoints", "keypoint_scores"]
+output: ["none"]

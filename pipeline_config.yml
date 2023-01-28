@@ -1,7 +1,6 @@
 nodes:
 - input.visual:
     source: pushupwhite.mp4
-- output.screen
 - model.posenet
-- custom_nodes.dabble.wave
+- custom_nodes.dabble.pushup
 - output.screen
