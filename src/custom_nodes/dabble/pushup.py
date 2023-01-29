@@ -123,9 +123,9 @@ class Node(AbstractNode):
             angle = getAngle(right_shoulder,right_ankle,right_wrist)
             if angle <= 20:
                self.downCondition.add("b")
-               draw_text(img, 20, 130, "Condiiton 2", GREEN)
+               draw_text(img, 20, 130, "Body is level to the ground", GREEN)
             else:
-               draw_text(img, 20, 130, "Condition 2", BLACK)
+               draw_text(img, 20, 130, "Body is level to the ground", BLACK)
 
          if right_shoulder is not None and right_elbow is not None and self.shoulderElbowDistance is not None:
             if noFlare(right_shoulder,right_elbow,self.shoulderElbowDistance):
@@ -161,9 +161,9 @@ class Node(AbstractNode):
             angle = getAngle(right_shoulder,right_ankle,right_wrist)
             if angle >= 35:
                self.upCondition.add("b")
-               draw_text(img, 20, 130, "Condition 2", GREEN)
+               draw_text(img, 20, 130, "Body is level to the ground", GREEN)
             else:
-               draw_text(img, 20, 130, "Condition 2", BLACK)
+               draw_text(img, 20, 130, "Body is level to the ground", BLACK)
 
          #at any point,if the individuals back is curved, reset the conditions that need to be met
          if right_shoulder is not None and right_hip is not None and right_ankle is not None:
