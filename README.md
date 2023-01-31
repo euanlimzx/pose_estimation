@@ -8,7 +8,7 @@ A computer vision project that uses the pose estimation model provided by Peekin
 4. If the individual has just registered a proper "UP", the code will begin looking checking the conditions for a proper "DOWN", and vice versa.<br>
 
 <h3>Explaining the code in pushup.py</h3>
-1. tkinter module initialises a basic UI with a web-cam for the user to get into position first
+1. tkinter module initialises a basic UI with a web-cam for the user to get into position first<br>
 2.<strong>map_keypoint_to_image_coords</strong> converts relative keypoint coordinates to absolute image coordinates.<br>
 3.<strong>draw_text</strong> is a function we use later on to write text on our screen<br>
 4. we define a Node class, where <strong>_init_</strong> initializes variables that we want to keep track of throughout our video (pushup count, number of conditions met etc.)<br>
