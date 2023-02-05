@@ -1,9 +1,8 @@
 # pose_estimation
 A computer vision project that uses the pose estimation model provided by PeekingDuck to act as a pushup counter.
 
-
-https://user-images.githubusercontent.com/109453826/216801477-04580e06-f0f3-46d4-b6bd-2ad0023864d2.mp4
-
+Watch the demonstration video:
+https://www.youtube.com/watch?v=UDV_IQ2eH20 
 
 <h3>How the program works</h3>
 1. We decided on a few different criteria that had to be met for a proper "UP" pushup position - when arms are fully extended - and a proper "DOWN" pushup position - body is closest to the ground.<br>
