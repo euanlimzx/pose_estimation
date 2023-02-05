@@ -1,6 +1,10 @@
 # pose_estimation
 A computer vision project that uses the pose estimation model provided by PeekingDuck to act as a pushup counter.
 
+
+https://user-images.githubusercontent.com/109453826/216801477-04580e06-f0f3-46d4-b6bd-2ad0023864d2.mp4
+
+
 <h3>How the program works</h3>
 1. We decided on a few different criteria that had to be met for a proper "UP" pushup position - when arms are fully extended - and a proper "DOWN" pushup position - body is closest to the ground.<br>
 2. To be considered 1 rep, our model must go from the "UP" position, to the "DOWN" position.<br>
@@ -21,3 +25,8 @@ A computer vision project that uses the pose estimation model provided by Peekin
 - 3. If the condition is met, the values will be updated accordingly<br>
 - 4. All conditions met will reset to zero, if the individual's back is not straight.<br>
 - 5. Check if all required conditions for a proper "UP"/"DOWN" is met, and update values accordingly - Push Up Count, Direction est. <br>
+
+<h3>Usage Guidelines</h3>
+1. Make sure nobody else is in frame
+2. Don't have your body parts leave the frame too quick
+3. If you would like to not use webcam and use a demonstration video instead, change source:0 to source:pushupwhite.mp4 in the pipeline_config.yml file
