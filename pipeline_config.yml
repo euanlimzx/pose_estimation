@@ -1,6 +1,6 @@
 nodes:
 - input.visual:
-    source: 0
+    source: 0 #change to pushupwhite.mp4 if you'd rather not use webcam 
 - model.posenet
 - custom_nodes.dabble.pushup
 - output.screen
