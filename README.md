@@ -26,6 +26,6 @@ https://www.youtube.com/watch?v=UDV_IQ2eH20
 - 5. Check if all required conditions for a proper "UP"/"DOWN" is met, and update values accordingly - Push Up Count, Direction est. <br>
 
 <h3>Usage Guidelines</h3>
-1. Make sure nobody else is in frame
-2. Don't have your body parts leave the frame too quick
+1. Make sure nobody else is in frame<br>
+2. Don't have your body parts leave the frame too quick<br>
 3. If you would like to not use webcam and use a demonstration video instead, change source:0 to source:pushupwhite.mp4 in the pipeline_config.yml file
