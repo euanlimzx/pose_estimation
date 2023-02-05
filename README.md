@@ -1,24 +1,23 @@
 # pose_estimation
+A computer vision project that uses the pose estimation model provided by PeekingDuck to act as a pushup counter.
 
-A computer vision project that uses pose estimation model to act as a pushup counter
+<h3>How the program works</h3>
+1. We decided on a few different criteria that had to be met for a proper "UP" pushup position - when arms are fully extended - and a proper "DOWN" pushup position - body is closest to the ground.<br>
+2. To be considered 1 rep, our model must go from the "UP" position, to the "DOWN" position.<br>
+3. At any point of time, we are checking for either a proper "UP" or a proper "DOWN", using certain criteria specified. 
+4. If the individual has just registered a proper "UP", the code will begin looking checking the conditions for a proper "DOWN", and vice versa.<br>
 
-Explaining how wave.py works
-1. To be considered 1 rep, our model must go from the "UP" position, to the "DOWN" position
-2. At any point of time, we are checking for either a proper "UP" or a proper "DOWN", using certain different criteria (angles of the elbow, elbow above hip etc.)
-  - when in the UP position, we are actively checking for a DOWN, and vice versa
-
-3. We define certain variables under initialization, these are variables that are "held" throughout the entire video (this is unlike the variables under run, which are reset during each frame)
-
-4. Initialized values are
-- number of pushups completed
-- the most recent position of an individual (either UP or DOWN)
-- upCondition, which refers to the number of conditions that have been met by the model, in order to be considered as a proper UP
-- downCondition, which refers to the number of conditions that have been met by the model, in order to be considered a proper DOWN
-
-5. During each run (under the .run method, this is ran every frame)
-- we get the required inputs and match them to the required keypoints
-- we define three functions that will be used to determine if different criteria are met (either for a proper DOWN, or a proper UP, or both)
-- if the model was previously in DOWN form, we will actively check if the conditions of an UP are met
-  - if they are, we change self.direction to DOWN, we reset self.downCondition, and we update the total pushup count
-- vice versa for a model in the UP form
-
+<h3>Explaining the code in pushup.py</h3>
+1. tkinter module initialises a basic UI with a web-cam for the user to get into position first<br>
+2.<strong>map_keypoint_to_image_coords</strong> converts relative keypoint coordinates to absolute image coordinates.<br>
+3.<strong>draw_text</strong> is a function we use later on to write text on our screen<br>
+4. we define a Node class, where <strong>_init_</strong> initializes variables that we want to keep track of throughout our video (pushup count, number of conditions met etc.)<br>
+5. under <strong>run</strong> (in which the code runs every frame), we first get the required input from the pipeline, and actively try to detect and assign values to our required keypoints, as long the confidence score is higher than our predefined threshold. We also label these keypoints using our <strong>draw_text</strong> function<br>
+6. Function <strong>getAngle(A,B,C)</strong> as a function to be used later. The function takes in three coordinates A,B,C as arguments, and returns angle ABC.<br>
+7. Function <strong>noFlare</strong> as a function to be used later. The function returns False if the individual is flaring elbows during the push up, and returns True if the individual is doing proper form.<br>
+8. Regarding the rest of the code, here is the basic structure.<br>
+- 1. Checks if individual is going up or down<br>
+- 2. For each condition function, we first check for the existence of the required keypoints, before checking if the condition is met.<br>
+- 3. If the condition is met, the values will be updated accordingly<br>
+- 4. All conditions met will reset to zero, if the individual's back is not straight.<br>
+- 5. Check if all required conditions for a proper "UP"/"DOWN" is met, and update values accordingly - Push Up Count, Direction est. <br>
