@@ -25,7 +25,11 @@ https://www.youtube.com/watch?v=UDV_IQ2eH20
 - 4. All conditions met will reset to zero, if the individual's back is not straight.<br>
 - 5. Check if all required conditions for a proper "UP"/"DOWN" is met, and update values accordingly - Push Up Count, Direction est. <br>
 
+<h3>Usage</h3>
+In the relevant virtual environment with PeekingDuck installed, run "peekingduck run" via the Anaconda Prompt
+
 <h3>Usage Guidelines</h3>
 1. Make sure nobody else is in frame<br>
-2. Don't have your body parts leave the frame too quick<br>
-3. If you would like to not use webcam and use a demonstration video instead, change source:0 to source:pushupwhite.mp4 in the pipeline_config.yml file
+2. During the countdown, make sure your entire body is in frame, in pushup position.<br>
+3. Don't have your body parts leave the frame too quick<br>
+4. If you would like to not use webcam and use a demonstration video instead, change source:0 to source:pushupwhite.mp4 in the pipeline_config.yml file
